@@ -1,0 +1,116 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px; 
+    font-family: 'Sniglet', cursive;
+}
+
+input, textarea{
+    display: block;
+	width: 100%;
+	border-radius: 20px;
+	font-family: 'Sniglet', cursive;
+	font-size: 1em;
+	color: #676767;
+	transition: border 0.5s;
+	-webkit-transition: border 0.5s;
+	-moz-transition: border 0.5s;
+	-o-transition: border 0.5s;
+	border: solid 3px #98d4f3;	
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+input{
+    margin-top: 3%;
+    padding-bottom: 3%;
+}
+
+textarea{
+    margin-top: 3%;
+    padding-bottom: 50%;
+}
+
+caption{
+    font-size: 200%;
+    padding-top: 2%;
+    padding-bottom: 5%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #676767;
+
+}
+
+th, td {
+    padding: 1.5%;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+tbody tr:nth-child(odd) {
+    background: #aadffa; 
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #aadffa;
+}
+
+
+
+.nav-wrapper {
+    padding: 10px;
+    text-align: center;
+    background-color: #98d4f3;
+    font-size: 24px;
+    font-weight: 600;
+	color: #676767;
+    
+}
+
+.input_fields{
+    float: left;
+    width: 47%;
+    padding-left: 1.5%;
+}
+
+.table{
+    float: right;
+    width: 47%;
+    padding-right: 1.5%;
+}
+
+.btn {
+    border-color: #676767;
+    border: 2px solid;
+    background-color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    line-height: 1.5;
+    font: 600 1.2rem 'Sniglet', cursive;
+    /* padding: 0.6% 2%; */
+    padding: 10px 20px;
+    letter-spacing: 0.05rem; 
+    margin-right: 3%;
+    margin-left: 3%;
+    color: #676767;
+}
+
+.btn:hover {
+    transition-duration: .5s;
+    
+    background-color: #98d4f3;
+}

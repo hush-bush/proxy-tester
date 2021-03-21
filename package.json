@@ -1,0 +1,28 @@
+{
+  "name": "proxy-tester",
+  "version": "1.0.0",
+  "description": "shopping list",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"proxy-tester\"",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^11.2.1",
+    "electron-reload": "^1.5.0",
+    "http": "0.0.1-security",
+    "ipc": "0.0.1",
+    "module_name": "^1.0.0",
+    "request": "^2.88.2",
+    "requests": "^0.3.0"
+  },
+  "devDependencies": {
+    "electron-package": "^0.1.0",
+    "electron-packager": "^15.2.0",
+    "spectron": "^14.0.0"
+  }
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Прокси тестер</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo center">Прокси тестер</a>
+        </div>
+    </nav>
+    <div class="input_fields">
+        <input value="http://www.google.com"></input>
+        <!-- value="http://www.google.com" -->
+        <!-- rows="10" cols="30" -->
+        <textarea name="message" id="textarea">208.207.241.249:65073</textarea> 
+    </div>
+    <div class="table">
+    <table id="table">
+            <thead>
+                <caption>Проверенные прокси</caption>
+                <tr>
+                <th>IP</th>
+                <th>PORT</th>
+                <th>STATUS</th>
+                <th>PING</th>
+                </tr>
+            <thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <footer>
+        <form>
+        <button class="btn draw-border" onclick="checkProxy()" type="button">проверить</button>
+        <button class="btn draw-border" type="submit" id="ipcButton">построить</button>
+        <button type="button" class="btn draw-border" onclick="clearProxy()">очистить</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="saveWorking()">сохранить</button>   
+        </form>
+    </footer>
+    <script src="checkProxy.js"></script>
+    <script src="clearProxy.js"></script>
+    <script src="saveWorking.js"></script>
+    <!-- <script src="graph.js"></script> -->
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e){
+            e.preventDefault();
+            
+            //const item = document.getElementById('table');
+            let proxylist = [];
+            let table_len = document.getElementById("table").getElementsByTagName("tbody")[0].rows.length-1
+            for (let i=1; i<=table_len; i++) {
+                cell1 = String(document.getElementById("table").getElementsByTagName("tbody")[0].rows[i].cells[0].innerHTML)
+                cell2 = String(document.getElementById("table").getElementsByTagName("tbody")[0].rows[i].cells[1].innerHTML)
+                cell3 = String(document.getElementById("table").getElementsByTagName("tbody")[0].rows[i].cells[3].innerHTML)
+                
+                //console.log(cell1, cell2, cell3);
+                
+                proxylist[i] = cell1 + ":" + cell2 + ":" + cell3;
+            }
+            let test = "testMainWidow";
+            console.log(test)
+            //console.log(proxylist, 'mainWindow')
+            ipcRenderer.send('Graph:submit', proxylist);
+        }
+
+    </script>
+    <!-- <script>
+    textarea = document.getElementsByTagName('textarea').item(0);
+    button = document.getElementsByTagName('button').item(0);
+
+    function checkProxy() {
+        input = document.getElementsByTagName('input').item(0);
+        let url = input.value;
+        let form_proxies = textarea.value.split("\n");
+        // console.log(textarea.value);
+        //alert(form_proxies);
+        // for(let i in form_proxies) {
+        //     console.log(form_proxies[i]);
+        // }
+        for (i in form_proxies){
+            let all_proxies = form_proxies[i];      //i
+            let proxy = `${all_proxies}`.split(":");
+            let ip = proxy[0];
+            let port = proxy[1];
+            // optional user--pass
+            //let username = arr[2];
+            //let password = arr[3];
+
+            const request = require('request');
+            let options = {
+                url: `${url}`,
+                proxy: `${"http://" + ip + ":" + port}`, // "http://208.207.241.249:65073"
+                time: true
+            };
+            //console.log(options)
+            // проверка прокси на работоспособность
+            let start = new Date();
+            request.get(options, function(err, res) {
+                let end = new Date() - start;
+                if (res.statusCode == 200) {
+                    console.log("Рабочая прокси: " + options.host + ":" + options.port + " " + res.statusCode + " " + end);
+                    let table = document.getElementById("table").getElementsByTagName("tbody")[0];
+                    let line = document.createElement("tr"); // создаем строку
+
+                    let column1 = document.createElement("td");
+                    column1.innerHTML = ip;
+                    line.appendChild(column1);
+            
+                    let column2 = document.createElement("td");
+                    column2.innerHTML = port;
+                    line.appendChild(column2);
+
+                    let column3 = document.createElement("td");
+                    column3.innerHTML = res.statusCode;
+                    line.appendChild(column3);            //res.statusCode
+                    
+                    let column4 = document.createElement("td");
+                    column4.innerHTML = res.elapsedTime + "ms";
+                    line.appendChild(column4);
+
+                    table.appendChild(line);  
+
+                    } else {
+                        console.log(res.statusCode);
+                }
+            });
+        }
+    }
+    function saveWorking() {
+        let proxylist = [];
+        let table_len = document.getElementById("table").getElementsByTagName("tbody")[0].rows.length-1
+        for (let i=1; i<=table_len; i++) {
+            cell1 = String(document.getElementById("table").getElementsByTagName("tbody")[0].rows[i].cells[0].innerHTML)
+            cell2 = String(document.getElementById("table").getElementsByTagName("tbody")[0].rows[i].cells[1].innerHTML)
+            console.log(cell1, cell2);
+            
+            proxylist[i] = cell1 + ":" + cell2 + "\n";
+        }
+
+        //alert(proxylist);
+        // let new_str = proxylist.toString().replaceAll(",", "");
+        // alert(new_str);
+
+        let uniq_proxylist = Array.from(new Set(proxylist)).toString().replaceAll(",", "");
+        //alert(uniq_proxylist);
+        const fs = require('fs');
+
+        fs.writeFile("./proxylist.txt", uniq_proxylist, (err) => {   //.toString().replace(",", "")
+            if(err){
+                console.log(err);
+            } else{
+                console.log("proxy added");
+            }
+        });
+    };
+
+    function clearProxy(){
+        document.getElementById("textarea").value = '';
+    }
+
+</script> -->
+
+
+</body>
+</html>
+    <!-- <ul></ul>
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+        const ul = document.querySelector('ul');
+
+        // Add item
+        ipcRenderer.on('item:add', function(e, item){
+            ul.className = 'collection';
+            const li = document.createElement('li');
+            li.className = 'collection-item';
+            const itemText = document.createTextNode(item);
+            li.appendChild(itemText);
+            ul.appendChild(li);
+        });
+
+        // Clear items
+        ipcRenderer.on('item:clear', function(){
+            ul.innerHTML = '';
+            ul.className = '';
+        });
+
+        // Rm item
+        ul.addEventListener('dblclick', removeItem);
+
+        function removeItem(e){
+            e.target.remove();
+            if(ul.children.length == 0){
+                ul.className = '';
+            }
+        }
+    </script> -->
